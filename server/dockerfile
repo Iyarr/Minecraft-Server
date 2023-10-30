@@ -1,0 +1,33 @@
+FROM ubuntu:latest AS build
+
+RUN apt update && \
+    apt install -y unzip curl
+
+RUN mkdir /opt/bedrock
+
+RUN curl -l -O https://minecraft.azureedge.net/bin-linux/bedrock-server-1.20.40.01.zip
+
+RUN unzip -d /opt/bedrock bedrock-server-1.20.40.01.zip
+
+FROM ubuntu:latest AS run
+
+COPY --from=build /opt/bedrock /opt/bedrock
+
+RUN apt clean &&  apt update && \
+    apt install -y ufw 
+
+RUN chown -R root:root /opt/bedrock
+
+RUN ufw allow 19132/udp
+RUN ufw allow 22/tcp
+
+# Create minecraft user
+RUN useradd --user-group \
+            --no-create-home \
+            --home-dir /data \
+            --shell /usr/sbin/nologin \
+            minecraft
+
+RUN cp -r /opt/bedrock /home/bedrock
+
+#CMD ["/bin/bash", "-c", "LD_LIBRARY_PATH=. ./bedrock_server"]

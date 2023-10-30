@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  backend:
+    build: .
+    container_name: ec2admin
+    volumes:
+      - ./ansible:/home/ansible
+      - ./tf:/home/tf
+    environment:
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - SSH_KEY_PATH=${SSH_KEY_PATH}
+      - region=${region}
+    tty: true
