@@ -1,4 +1,11 @@
+
 docker.txt
+
 .env
+
+/ansible/hosts
+
+
+
 server/
 nukkitserver/
