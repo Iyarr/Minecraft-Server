@@ -1,17 +1,3 @@
-FROM openjdk:8-jdk-slim AS build
-
-RUN apt update && \
-    apt install -y git
-
-WORKDIR /src
-
-RUN git clone https://github.com/CloudburstMC/Nukkit
-
-WORKDIR /src/Nukkit
-
-RUN git submodule update --init && \
-    ./gradlew shadowJar
-
 FROM ubuntu:latest
 
 RUN apt clean && apt update && \
@@ -44,12 +30,11 @@ RUN apt update && \
     # awscli の設定
 RUN apt install awscli -y
 
-RUN mkdir /root/.ssh && \
-    ssh-keygen -t rsa -N "" -f "$SSH_KEY_PATH"
+COPY ./ansible /home/ansible
+COPY ./tf /home/tf
 
 COPY ./init.sh /src/
 RUN chmod +x /src/init.sh
 
-
-COPY --from=build /src/Nukkit/target/nukkit-1.0-SNAPSHOT.jar /home/nukkit.jar
-CMD ["/src/init.sh"]
+WORKDIR /src
+CMD ["bash", "./init.sh"]

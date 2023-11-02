@@ -5,22 +5,19 @@ provider "aws" {
 }
 
 resource "aws_instance" "example" {
-  ami           = "ami-0fd8f5842685ca887"
+  ami           = data.aws_ami.latest-ubuntu.id
   instance_type = "t3.micro"
 
-  subnet_id            = aws_subnet.example.id
+  subnet_id = aws_subnet.example.id
   associate_public_ip_address = true
 
   provisioner "remote-exec" {
     connection {
       type        = "ssh"
-      user        = "ubuntu"
+      user        = "tf"
       host        = var.private_ip
-      private_key = file(var.SSH_KEY_PATH)
+      private_key = file("${var.SSH_KEY_PATH}/id_rsa")
     }
-    inline = [
-      "sudo apt update"
-    ]
   }
 }
 
