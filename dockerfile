@@ -34,7 +34,9 @@ COPY ./ansible /home/ansible
 COPY ./tf /home/tf
 
 COPY ./init.sh /src/
+RUN sed -i 's/\r//' /src/init.sh
 RUN chmod +x /src/init.sh
+RUN chmod +x /src/clean.sh
 
-WORKDIR /src
-CMD ["bash", "./init.sh"]
+WORKDIR /home/tf
+CMD ["/bin/bash", "/src/init.sh"]

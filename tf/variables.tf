@@ -1,5 +1,5 @@
-variable "aws_access_key_id" {}
-variable "aws_secret_access_key" {}
-variable "SSH_KEY_PATH"  {}
-variable "region" {}
+variable aws_access_key {}
+variable aws_secret_key {}
+variable aws_region {}
+variable "ssh_key_path" {}
 variable "private_ip" {}

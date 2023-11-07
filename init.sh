@@ -15,8 +15,18 @@ aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
 aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
 aws configure set region "$region"
 
-#terraform init
+export TF_VAR_aws_access_key=$AWS_ACCESS_KEY_ID
+export TF_VAR_aws_secret_key=$AWS_SECRET_ACCESS_KEY
+export TF_VAR_ssh_key_path=$SSH_KEY_PATH
+export TF_VAR_aws_region=$region
+export TF_VAR_private_ip=$private_ip
+
+terraform init
+
+terraform plan -out=myplan
 
 #terraform apply -auto-approve
 
 #ansible-play -i hosts /home/ansible/playbook.yml
+
+tail -f /dev/null

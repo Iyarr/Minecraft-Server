@@ -9,3 +9,7 @@ docker.txt
 
 server/
 nukkitserver/
+
+
+/tf/.terraform
+/tf/myplan

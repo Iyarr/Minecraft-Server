@@ -14,3 +14,4 @@ services:
       - private_ip=${private_ip}
       - region=${region}
     tty: true
+    stdin_open: true
