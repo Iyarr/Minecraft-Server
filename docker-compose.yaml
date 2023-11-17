@@ -11,7 +11,7 @@ services:
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - SSH_KEY_PATH=${SSH_KEY_PATH}
-      - private_ip=${private_ip}
       - region=${region}
+      - SERVER_VERSION=${SERVER_VERSION}
     tty: true
     stdin_open: true

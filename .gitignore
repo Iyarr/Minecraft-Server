@@ -11,5 +11,5 @@ server/
 nukkitserver/
 
 
-/tf/.terraform
-/tf/myplan
+/tf/.terraform*
+/tf/terraform*

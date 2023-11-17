@@ -1,18 +1,17 @@
-# 対象の指定(インベントリファイルで指定した名前)
 - hosts: server
-
-  # 以下に実際の操作を記述していく
+  remote_user: ubuntu
   tasks:
     - name: apt clean
+      become: yes
       apt:
-        autoclean: yes # すべてのキャッシュファイルを削除
-        update_cache: no # アップデートせずにキャッシュをクリア
-      register: clean_result
+        autoclean: yes
+        update_cache: no
 
-    - name: apt update
+    - name: apt update and upgrade
       apt:
-        update_cache: yes # パッケージリストをアップデート
-      register: update_result
+        update_cache: yes
+        upgrade: yes
+      become: yes
 
     - name: Install UFW,unzip and curl
       become: yes
@@ -23,38 +22,37 @@
           - ufw
         state: present
 
-    - name: Use curl with Ansible
-      tasks:
-        - name: Use curl to download a file
-          shell: |
-            curl -l -O /opt/bedrock \
-              https://minecraft.azureedge.net/bin-linux/bedrock-server-1.20.40.01.zip
-
-        - name: Use unzip
-          shell: unzip /opt/bedrock/bedrock-server-1.20.40.01.zip
-
-        - name: Delete zip file
-          shell: rm /opt/bedrock/bedrock-server-1.20.40.01.zip
-
-    - name: Configure UFW Rules
+    - name: Remove all
+      command: rm -f -r bedrock bedrock-server.zip
       become: yes
-      tasks:
-        - name: Enable UFW
-          command: ufw --force enable
 
-        - name: Allow SSH (TCP Port 22)
-          command: ufw allow 22/tcp
+    - name: Run Command 1
+      command: curl -o bedrock-server.zip {{ server_url }}
+      become: yes
 
-        - name: Allow UDP Port 19132
-          command: ufw allow 19132/udp
+    - name: Run Command 2
+      command: unzip bedrock-server.zip -d ~/bedrock
 
-        - name: Reload UFW
-          command: ufw reload
+    - name: Run Command 3
+      command: rm -f ~/bedrock-server.zip
 
-    # 言語設定の変更
-    - name: set LANG=ja_JP.UTF-8 in /etc/locale.conf
-      lineinfile:
-        dest: /etc/locale.conf
-        regexp: "^LANG="
-        line: "LANG=ja_JP.UTF-8"
-        backup: yes
+    - name: Enable UFW
+      become: yes
+      command: ufw --force enable
+
+    - name: Allow SSH (TCP Port 22)
+      become: yes
+      command: ufw allow 22/tcp
+
+    - name: Allow UDP Port 19132
+      become: yes
+      command: ufw allow 19132/udp
+
+    - name: Reload UFW
+      become: yes
+      command: ufw reload
+
+    - name: RUN SERVER
+      ansible.builtin.shell:
+        cmd: LD_LIBRARY_PATH=. ./bedrock_server &
+        chdir: ~/bedrock

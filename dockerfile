@@ -1,9 +1,9 @@
 FROM ubuntu:latest
 
-RUN apt clean && apt update && \
+RUN apt clean && apt update && apt upgrade -y && \
     \
     # terraform のインストール手順
-    apt install -y unzip zip git && \
+    apt install -y unzip zip git curl && \
     \
     #tfenvのインストール
     git clone https://github.com/tfutils/tfenv.git ~/.tfenv
@@ -36,7 +36,7 @@ COPY ./tf /home/tf
 COPY ./init.sh /src/
 RUN sed -i 's/\r//' /src/init.sh
 RUN chmod +x /src/init.sh
-RUN chmod +x /src/clean.sh
+RUN chmod +x /home/tf/script.sh
 
 WORKDIR /home/tf
 CMD ["/bin/bash", "/src/init.sh"]
