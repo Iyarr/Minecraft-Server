@@ -18,8 +18,9 @@ function start() {
     cd /home/ansible
     sed -i "10s/.*/server_url=https:\/\/minecraft.azureedge.net\/bin-linux\/bedrock-server-$SERVER_VERSION.zip/" \
         /home/ansible/hosts
-    #sleep 30
-    #ansible-playbook -i hosts playbook.yaml
+    sleep 90
+    export ANSIBLE_HOST_KEY_CHECKING=false
+    ansible-playbook -i hosts playbook.yaml
 }
 
 function restart() {
