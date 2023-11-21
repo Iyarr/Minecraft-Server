@@ -13,5 +13,6 @@ services:
       - SSH_KEY_PATH=${SSH_KEY_PATH}
       - region=${region}
       - SERVER_VERSION=${SERVER_VERSION}
+      - SERVER_NAME=${SERVER_NAME}
     tty: true
     stdin_open: true

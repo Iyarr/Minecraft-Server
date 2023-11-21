@@ -36,8 +36,11 @@
     - name: Remove zip file
       command: rm -f ~/bedrock-server.zip
 
-    - name: Change world Difficulty
+    - name: Change world difficulty
       command: sed -i "/difficulty=*/s/.*/difficulty=hard/" ~/bedrock/server.properties
+
+    - name: Set world name
+      command: sed -i "/server-name=*/s/.*/server-name={{ server_name }}/" ~/bedrock/server.properties
 
     - name: Enable UFW
       become: yes
@@ -57,5 +60,5 @@
 
     - name: RUN SERVER
       ansible.builtin.shell:
-        cmd: LD_LIBRARY_PATH=. ./bedrock_server
+        cmd: LD_LIBRARY_PATH=. & nohup ./bedrock_server > ~/output.log &
         chdir: ~/bedrock

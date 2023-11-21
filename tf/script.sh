@@ -16,9 +16,10 @@ function start() {
     terraform apply -auto-approve
 
     cd /home/ansible
-    base_url = https:\/\/minecraft.azureedge.net\/bin-linux
+    base_url=$(echo "https:\/\/minecraft.azureedge.net\/bin-linux")
     sed -i "10s/.*/server_url=$base_url\/bedrock-server-$SERVER_VERSION.zip/" \
         /home/ansible/hosts
+    sed -i "/server-name=*/s/.*/server-name=$SERVER_NAME/" /home/ansible/hosts
     sleep 90
     export ANSIBLE_HOST_KEY_CHECKING=false
     ansible-playbook -i hosts playbook.yaml
