@@ -5,7 +5,6 @@ docker.txt
 
 /ansible/hosts
 
-server/
 bedrock_server_how_to.html
 
 /tf/.terraform*
