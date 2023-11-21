@@ -15,6 +15,4 @@ aws configure set region "$region"
 
 /home/tf/script.sh start
 
-#ansible-play -i hosts /home/ansible/playbook.yml
-
 tail -f /dev/null

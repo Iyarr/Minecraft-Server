@@ -5,11 +5,8 @@ docker.txt
 
 /ansible/hosts
 
-
-
 server/
-nukkitserver/
-
+bedrock_server_how_to.html
 
 /tf/.terraform*
 /tf/terraform*

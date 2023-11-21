@@ -3,12 +3,12 @@
 function clean() {
     terraform destroy -auto-approve
 
-    rm -r .terraform
-    rm .terraform.lock.hcl
-    rm terraform.tfstate
-    rm terraform.tfstate.backup
-    rm $SSH_KEY_PATH/known_hosts
-    rm $SSH_KEY_PATH/known_hosts.old
+    rm -f -r .terraform
+    rm -f .terraform.lock.hcl
+    rm -f terraform.tfstate
+    rm -f terraform.tfstate.backup
+    rm -f $SSH_KEY_PATH/known_hosts
+    rm -f $SSH_KEY_PATH/known_hosts.old
 }
 
 function start() {
@@ -16,7 +16,8 @@ function start() {
     terraform apply -auto-approve
 
     cd /home/ansible
-    sed -i "10s/.*/server_url=https:\/\/minecraft.azureedge.net\/bin-linux\/bedrock-server-$SERVER_VERSION.zip/" \
+    base_url = https:\/\/minecraft.azureedge.net\/bin-linux
+    sed -i "10s/.*/server_url=$base_url\/bedrock-server-$SERVER_VERSION.zip/" \
         /home/ansible/hosts
     sleep 90
     export ANSIBLE_HOST_KEY_CHECKING=false

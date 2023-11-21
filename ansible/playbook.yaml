@@ -22,19 +22,22 @@
           - ufw
         state: present
 
-    - name: Remove all
+    - name: Remove previous file
       command: rm -f -r bedrock bedrock-server.zip
       become: yes
 
-    - name: Run Command 1
+    - name: Downlord zip file
       command: curl -o bedrock-server.zip {{ server_url }}
       become: yes
 
-    - name: Run Command 2
+    - name: Unzip server file
       command: unzip bedrock-server.zip -d ~/bedrock
 
-    - name: Run Command 3
+    - name: Remove zip file
       command: rm -f ~/bedrock-server.zip
+
+    - name: Change world Difficulty
+      command: sed -i "/difficulty=*/s/.*/difficulty=hard/" ~/bedrock/server.properties
 
     - name: Enable UFW
       become: yes
@@ -54,5 +57,5 @@
 
     - name: RUN SERVER
       ansible.builtin.shell:
-        cmd: LD_LIBRARY_PATH=. ./bedrock_server &
+        cmd: LD_LIBRARY_PATH=. ./bedrock_server
         chdir: ~/bedrock

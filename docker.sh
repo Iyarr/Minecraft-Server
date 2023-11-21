@@ -1,30 +1,24 @@
 #!/bin/bash
 
-function start() {
-    terraform destroy -auto-approve
-
-    rm -r .terraform
-    rm .terraform.lock.hcl
-    rm terraform.tfstate
-    rm terraform.tfstate.backup
-    rm $SSH_KEY_PATH/known_hosts
-    rm $SSH_KEY_PATH/known_hosts.old
-}
-
-function start() {
+function build_and_up() {
     docker-compose up -d --build
-    sleep 60
+    sleep 90
     docker-compose logs
 }
 
-function restart() {
+function rm() {
     docker-compose rm --stop -f
-    start
 }
 
+function rm_and_up() {
+    rm
+    up
+}
 
 if [ "$1" == "" ]; then
-    start
-elif [ "$1" == "restart" ]; then
-    restart
+    build_and_up
+elif [ "$1" == "rm" ]; then
+    rm
+elif [ "$1" == "rm_and_up" ]; then
+    rm_and_up
 fi
