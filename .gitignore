@@ -2,6 +2,7 @@
 docker.txt
 
 .env
+.ssh
 
 /ansible/hosts
 
